@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/interval-training-coach/precache-manifest.5e2d0cd3287fd71d4ced0c4110d56c36.js"
+  "/interval-training-coach/precache-manifest.9f64f679ab1567b2dd435958288b9eaa.js"
 );
 
 self.addEventListener('message', (event) => {
