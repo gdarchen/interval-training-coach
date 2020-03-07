@@ -1,26 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
+import logo from "./logo.svg";
 
-function App() {
+const App = () => {
+  const speak = () => {
+    const msg = new SpeechSynthesisUtterance();
+    msg.text = "Welcome to my first Progressive Web App!";
+    msg.volume = 0.1;
+    msg.voice = speechSynthesis
+      .getVoices()
+      .filter(voice => voice.name === "Thomas")[0];
+    speechSynthesis.speak(msg);
+    console.log(msg);
+  };
+
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          First PWA (yet only implementing text-to-speech). More to come...
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <button className="speak-button" onClick={speak}>
+          Enable text-to-speech
+        </button>
       </header>
     </div>
   );
-}
+};
 
 export default App;
