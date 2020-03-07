@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.css": "/interval-training-coach/static/css/main.cfbc7119.chunk.css",
-    "main.js": "/interval-training-coach/static/js/main.959076d4.chunk.js",
-    "main.js.map": "/interval-training-coach/static/js/main.959076d4.chunk.js.map",
+    "main.css": "/interval-training-coach/static/css/main.4b740d44.chunk.css",
+    "main.js": "/interval-training-coach/static/js/main.9b923eaf.chunk.js",
+    "main.js.map": "/interval-training-coach/static/js/main.9b923eaf.chunk.js.map",
     "runtime-main.js": "/interval-training-coach/static/js/runtime-main.921b3984.js",
     "runtime-main.js.map": "/interval-training-coach/static/js/runtime-main.921b3984.js.map",
-    "static/js/2.9d882190.chunk.js": "/interval-training-coach/static/js/2.9d882190.chunk.js",
-    "static/js/2.9d882190.chunk.js.map": "/interval-training-coach/static/js/2.9d882190.chunk.js.map",
+    "static/js/2.1e571314.chunk.js": "/interval-training-coach/static/js/2.1e571314.chunk.js",
+    "static/js/2.1e571314.chunk.js.map": "/interval-training-coach/static/js/2.1e571314.chunk.js.map",
     "index.html": "/interval-training-coach/index.html",
-    "precache-manifest.9735fff4840aebd9895daea818cd7c8f.js": "/interval-training-coach/precache-manifest.9735fff4840aebd9895daea818cd7c8f.js",
+    "precache-manifest.7d0fa2e96d61515c384e67b29d997e5e.js": "/interval-training-coach/precache-manifest.7d0fa2e96d61515c384e67b29d997e5e.js",
     "service-worker.js": "/interval-training-coach/service-worker.js",
-    "static/css/main.cfbc7119.chunk.css.map": "/interval-training-coach/static/css/main.cfbc7119.chunk.css.map",
-    "static/js/2.9d882190.chunk.js.LICENSE.txt": "/interval-training-coach/static/js/2.9d882190.chunk.js.LICENSE.txt",
-    "static/media/logo.svg": "/interval-training-coach/static/media/logo.5d5d9eef.svg"
+    "static/css/main.4b740d44.chunk.css.map": "/interval-training-coach/static/css/main.4b740d44.chunk.css.map",
+    "static/js/2.1e571314.chunk.js.LICENSE.txt": "/interval-training-coach/static/js/2.1e571314.chunk.js.LICENSE.txt",
+    "static/media/profile.png": "/interval-training-coach/static/media/profile.7fc97f05.png"
   },
   "entrypoints": [
     "static/js/runtime-main.921b3984.js",
-    "static/js/2.9d882190.chunk.js",
-    "static/css/main.cfbc7119.chunk.css",
-    "static/js/main.959076d4.chunk.js"
+    "static/js/2.1e571314.chunk.js",
+    "static/css/main.4b740d44.chunk.css",
+    "static/js/main.9b923eaf.chunk.js"
   ]
 }
