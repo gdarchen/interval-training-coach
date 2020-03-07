@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/interval-training-coach/static/css/main.cfbc7119.chunk.css",
+    "main.js": "/interval-training-coach/static/js/main.959076d4.chunk.js",
+    "main.js.map": "/interval-training-coach/static/js/main.959076d4.chunk.js.map",
+    "runtime-main.js": "/interval-training-coach/static/js/runtime-main.921b3984.js",
+    "runtime-main.js.map": "/interval-training-coach/static/js/runtime-main.921b3984.js.map",
+    "static/js/2.9d882190.chunk.js": "/interval-training-coach/static/js/2.9d882190.chunk.js",
+    "static/js/2.9d882190.chunk.js.map": "/interval-training-coach/static/js/2.9d882190.chunk.js.map",
+    "index.html": "/interval-training-coach/index.html",
+    "precache-manifest.9735fff4840aebd9895daea818cd7c8f.js": "/interval-training-coach/precache-manifest.9735fff4840aebd9895daea818cd7c8f.js",
+    "service-worker.js": "/interval-training-coach/service-worker.js",
+    "static/css/main.cfbc7119.chunk.css.map": "/interval-training-coach/static/css/main.cfbc7119.chunk.css.map",
+    "static/js/2.9d882190.chunk.js.LICENSE.txt": "/interval-training-coach/static/js/2.9d882190.chunk.js.LICENSE.txt",
+    "static/media/logo.svg": "/interval-training-coach/static/media/logo.5d5d9eef.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.921b3984.js",
+    "static/js/2.9d882190.chunk.js",
+    "static/css/main.cfbc7119.chunk.css",
+    "static/js/main.959076d4.chunk.js"
+  ]
+}
