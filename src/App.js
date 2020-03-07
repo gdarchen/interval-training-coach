@@ -1,10 +1,11 @@
 import { makeStyles } from "@material-ui/core/styles";
-import React from "react";
+import classNames from "classnames";
+import React, { Suspense } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
-import AppShell from "./common/app-shell/AppShell";
-import Credits from "./common/credits/Credits";
-import classNames from "classnames";
+
+const AppShell = React.lazy(() => import("./common/app-shell/AppShell"));
+const Credits = React.lazy(() => import("./common/credits/Credits"));
 
 const useStyles = makeStyles(theme => ({
   offset: theme.mixins.toolbar
@@ -25,19 +26,21 @@ const App = () => {
   };
 
   return (
-    <Router>
-      <AppShell />
+    <Router basename="/">
+      <Suspense fallback={<div>Loading...</div>}>
+        <AppShell />
 
-      <div className={classNames(classes.offset, "App")}>
-        <Switch>
-          <Route path="/credits">
-            <Credits />
-          </Route>
-          <Route path="/">
-            <button onClick={speak}>Speech-to-text</button>
-          </Route>
-        </Switch>
-      </div>
+        <div className={classNames(classes.offset, "App")}>
+          <Switch>
+            <Route path="/credits">
+              <Credits />
+            </Route>
+            <Route path="/">
+              <button onClick={speak}>Speech-to-text</button>
+            </Route>
+          </Switch>
+        </div>
+      </Suspense>
     </Router>
   );
 };

@@ -32,11 +32,9 @@ const AppShell = () => {
           </Link>
         </Typography>
 
-        <Button color="inherit">
-          <Link to="/credits" className={classes.link}>
-            Credits
-          </Link>
-        </Button>
+        <Link to="/credits" className={classes.link}>
+          <Button color="inherit">Credits</Button>
+        </Link>
       </Toolbar>
     </AppBar>
   );
