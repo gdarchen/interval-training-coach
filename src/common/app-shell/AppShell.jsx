@@ -6,7 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import React from "react";
 import { Link } from "react-router-dom";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
   root: {
     flexGrow: 1
   },
@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
     color: "unset",
     textDecoration: "unset"
   }
-}));
+});
 
 const AppShell = () => {
   const classes = useStyles();

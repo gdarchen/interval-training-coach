@@ -6,6 +6,7 @@ import "./App.css";
 import DurationPickerModal from "./common/duration-picker-modal/DurationPickerModal";
 import IntervalList from "./common/intervals-list/IntervalList";
 import { speak } from "./utils/textToSpeechUtils";
+import TrainingSelector from "./common/training-selector/TrainingSelector";
 
 const AppShell = React.lazy(() => import("./common/app-shell/AppShell"));
 const Credits = React.lazy(() => import("./common/credits/Credits"));
@@ -40,10 +41,13 @@ const App = () => {
               <button onClick={speak}>Speech-to-text</button>
 
               <button onClick={handleOpenModal}>Open modal</button>
+
               <DurationPickerModal
                 isModalOpened={isModalOpened}
                 handleCloseModal={handleCloseModal}
               />
+              
+              <TrainingSelector />
 
               <IntervalList />
             </Route>
