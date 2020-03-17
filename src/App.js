@@ -1,12 +1,14 @@
 import { makeStyles } from "@material-ui/core/styles";
 import classNames from "classnames";
 import React, { Suspense, useState } from "react";
+import { connect } from "react-redux";
 import { HashRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
 import DurationPickerModal from "./common/duration-picker-modal/DurationPickerModal";
 import IntervalList from "./common/intervals-list/IntervalList";
-import { speak } from "./utils/textToSpeechUtils";
 import TrainingSelector from "./common/training-selector/TrainingSelector";
+import { saveTrainingAction } from "./redux/actions/trainingActions";
+import { speak } from "./utils/textToSpeechUtils";
 
 const AppShell = React.lazy(() => import("./common/app-shell/AppShell"));
 const Credits = React.lazy(() => import("./common/credits/Credits"));
@@ -15,9 +17,12 @@ const useStyles = makeStyles(theme => ({
   offset: theme.mixins.toolbar
 }));
 
-const App = () => {
+const App = ({ saveTrainingAction: saveTraining }) => {
   const classes = useStyles();
   const [isModalOpened, setIsModalOpened] = useState(false);
+  const [selectedTraining, setSelectedTraining] = useState();
+
+  // saveTraining({ teeeest: "tttttt" });
 
   const handleCloseModal = () => {
     setIsModalOpened(false);
@@ -25,6 +30,10 @@ const App = () => {
 
   const handleOpenModal = () => {
     setIsModalOpened(true);
+  };
+
+  const onTrainingSelection = (event, value) => {
+    setSelectedTraining(value);
   };
 
   return (
@@ -46,10 +55,10 @@ const App = () => {
                 isModalOpened={isModalOpened}
                 handleCloseModal={handleCloseModal}
               />
-              
-              <TrainingSelector />
 
-              <IntervalList />
+              <TrainingSelector onTrainingSelection={onTrainingSelection} />
+
+              <IntervalList training={selectedTraining} />
             </Route>
           </Switch>
         </div>
@@ -58,4 +67,8 @@ const App = () => {
   );
 };
 
-export default App;
+const mapDispatchToProps = dispatch => ({
+  saveTrainingAction: training => dispatch(saveTrainingAction(training))
+});
+
+export default connect(null, mapDispatchToProps)(App);

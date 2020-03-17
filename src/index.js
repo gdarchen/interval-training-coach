@@ -9,10 +9,7 @@ import { loadState, saveState } from "./core/localStorage";
 import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import trainingReducer from "./redux/reducers/trainingReducer";
-import {
-  createMuiTheme,
-  ThemeProvider
-} from "@material-ui/core/styles";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import { yellow, orange } from "@material-ui/core/colors";
 
 // Load the persisted state from the previous session
@@ -20,7 +17,38 @@ const persistedState = loadState();
 
 // Build the initial Redux state
 const initialState = {
-  ...persistedState
+  ...persistedState,
+  trainingReducer: {
+    trainings: [
+      {
+        name: "Entrainement test 1",
+        periods: [
+          {
+            group: [
+              {
+                duration: { hours: 0, minutes: 20, seconds: 0 },
+                description: "Endurance fondamentale"
+              }
+            ],
+            occurences: 1
+          },
+          {
+            group: [
+              {
+                duration: { hours: 0, minutes: 30, seconds: 0 },
+                description: "Allure semi-marathon"
+              },
+              {
+                duration: { hours: 0, minutes: 2, seconds: 0 },
+                description: "Endurance fondamentale"
+              }
+            ],
+            occurences: 2
+          }
+        ]
+      }
+    ]
+  }
 };
 
 // Load the Redux reducers and combine them
@@ -39,8 +67,8 @@ const store = createStore(
 store.subscribe(
   throttle(() => {
     saveState({
-      rootReducer: {
-        /* toto: store.getState().rootReducer.toto, */
+      trainingReducer: {
+        trainings: store.getState().trainingReducer.trainings
       }
     });
   }, 1000)

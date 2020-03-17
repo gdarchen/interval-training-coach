@@ -1,7 +1,8 @@
 const trainingReducer = (state = {}, action) => {
   switch (action.type) {
     case "SAVE_TRAINING":
-      return { ...state, training: [...state.training, action.training] };
+      console.log(state.trainings);
+      return { ...state, trainings: [...state.trainings, action.training] };
     default:
       return state;
   }
