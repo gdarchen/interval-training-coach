@@ -3,6 +3,8 @@ import ListItem from "@material-ui/core/ListItem";
 import { makeStyles } from "@material-ui/core/styles";
 import classNames from "classnames";
 import React from "react";
+import { connect } from "react-redux";
+import { saveIntervalToEditAction } from "../../redux/actions/trainingActions";
 import { formatDuration } from "../../utils/durationUtils";
 import { formatIntervalToSpeechText, speak } from "../../utils/textToSpeechUtils";
 import IntervalListItem from "./IntervalListItem";
@@ -30,7 +32,11 @@ const useStyles = makeStyles({
   }
 });
 
-const IntervalList = ({ training }) => {
+const IntervalList = ({
+  training,
+  isEditMode,
+  saveIntervalToEditAction: saveIntervalToEdit
+}) => {
   const classes = useStyles();
   console.log(training);
 
@@ -57,15 +63,22 @@ const IntervalList = ({ training }) => {
                     <div
                       className={classes.interval}
                       onClick={() =>
-                        speak(formatIntervalToSpeechText(interval))
+                        isEditMode
+                          ? saveIntervalToEdit(interval)
+                          : speak(formatIntervalToSpeechText(interval))
                       }
                       key={`${index}-${JSON.stringify(
                         interval
                       )}-${JSON.stringify(interval.occurences)}`}
                     >
                       <IntervalListItem
-                        formattedDuration={formatDuration(interval.duration)}
+                        formattedDuration={
+                          interval.duration
+                            ? formatDuration(interval.duration)
+                            : null
+                        }
                         description={interval.description}
+                        isEditMode={isEditMode}
                       />
                     </div>
                   );
@@ -88,4 +101,9 @@ const IntervalList = ({ training }) => {
   );
 };
 
-export default IntervalList;
+const mapDispatchToProps = dispatch => ({
+  saveIntervalToEditAction: interval =>
+    dispatch(saveIntervalToEditAction(interval))
+});
+
+export default connect(null, mapDispatchToProps)(IntervalList);

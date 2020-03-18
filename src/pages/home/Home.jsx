@@ -1,57 +1,49 @@
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import FileCopyIcon from "@material-ui/icons/FileCopyOutlined";
-import PrintIcon from "@material-ui/icons/Print";
-import SaveIcon from "@material-ui/icons/Save";
-import ShareIcon from "@material-ui/icons/Share";
+import { makeStyles } from "@material-ui/core/styles";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
+import EditIcon from "@material-ui/icons/Edit";
 import SpeedDial from "@material-ui/lab/SpeedDial";
 import SpeedDialAction from "@material-ui/lab/SpeedDialAction";
 import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon";
 import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import DurationPickerModal from "../../common/duration-picker-modal/DurationPickerModal";
+import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
 import IntervalList from "../../common/intervals-list/IntervalList";
 import TrainingSelector from "../../common/training-selector/TrainingSelector";
+import { saveSelectedTrainingAction } from "../../redux/actions/trainingActions";
 import { speak } from "../../utils/textToSpeechUtils";
-
-const actions = [
-  { icon: <FileCopyIcon />, name: "Copy" },
-  { icon: <SaveIcon />, name: "Save" },
-  { icon: <PrintIcon />, name: "Print" },
-  { icon: <ShareIcon />, name: "Share" },
-  { icon: <FavoriteIcon />, name: "Like" }
-];
 
 const useStyles = makeStyles(theme => ({
   speedDial: {
     position: "absolute",
-    "&.MuiSpeedDial-directionUp, &.MuiSpeedDial-directionLeft": {
+    "&.MuiSpeedDial-directionUp": {
       bottom: theme.spacing(2),
       right: theme.spacing(2)
-    },
-    "&.MuiSpeedDial-directionDown, &.MuiSpeedDial-directionRight": {
-      top: theme.spacing(2),
-      left: theme.spacing(2)
     }
   }
 }));
 
-const Home = () => {
+const Home = ({
+  selectedTraining,
+  saveSelectedTrainingAction: saveSelectedTraining
+}) => {
   const classes = useStyles();
+  const history = useHistory();
 
-  const [isModalOpened, setIsModalOpened] = useState(false);
+  const actions = [
+    {
+      icon: <AddCircleIcon />,
+      name: "Create a training",
+      onClick: () => history.push("/training-creation")
+    },
+    ...(selectedTraining
+      ? [{ icon: <EditIcon />, name: "Edit this training" }]
+      : [])
+  ];
+
   const [isDialOpened, setIsDialOpened] = useState(false);
-  const [selectedTraining, setSelectedTraining] = useState();
-
-  const handleCloseModal = () => {
-    setIsModalOpened(false);
-  };
-
-  const handleOpenModal = () => {
-    setIsModalOpened(true);
-  };
 
   const onTrainingSelection = (event, value) => {
-    setSelectedTraining(value);
+    saveSelectedTraining(value);
   };
 
   const onDialOpen = () => {
@@ -66,19 +58,12 @@ const Home = () => {
     <>
       <button onClick={speak}>Speech-to-text</button>
 
-      <button onClick={handleOpenModal}>Open modal</button>
-
-      <DurationPickerModal
-        isModalOpened={isModalOpened}
-        handleCloseModal={handleCloseModal}
-      />
-
       <TrainingSelector onTrainingSelection={onTrainingSelection} />
 
       <IntervalList training={selectedTraining} />
 
       <SpeedDial
-        ariaLabel="SpeedDial example"
+        ariaLabel="speed-dial-main-actions"
         className={classes.speedDial}
         icon={<SpeedDialIcon />}
         onClose={onDialClose}
@@ -91,7 +76,7 @@ const Home = () => {
             key={action.name}
             icon={action.icon}
             tooltipTitle={action.name}
-            onClick={onDialClose}
+            onClick={action.onClick}
           />
         ))}
       </SpeedDial>
@@ -99,4 +84,13 @@ const Home = () => {
   );
 };
 
-export default Home;
+const mapStateToProps = state => ({
+  selectedTraining: state.trainingReducer.selectedTraining
+});
+
+const mapDispatchToProps = dispatch => ({
+  saveSelectedTrainingAction: training =>
+    dispatch(saveSelectedTrainingAction(training))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

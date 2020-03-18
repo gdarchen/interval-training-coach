@@ -11,6 +11,7 @@ import * as serviceWorker from "./serviceWorker";
 import trainingReducer from "./redux/reducers/trainingReducer";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import { yellow, orange } from "@material-ui/core/colors";
+import {v4 as uuidv4} from "uuid";
 
 // Load the persisted state from the previous session
 const persistedState = loadState();
@@ -21,11 +22,14 @@ const initialState = {
   trainingReducer: {
     trainings: [
       {
+        id: uuidv4(),
         name: "Entrainement test 1",
         periods: [
           {
+            id: uuidv4(),
             group: [
               {
+                id: uuidv4(),
                 duration: { hours: 0, minutes: 20, seconds: 0 },
                 description: "Endurance fondamentale"
               }
@@ -35,10 +39,12 @@ const initialState = {
           {
             group: [
               {
+                id: uuidv4(),
                 duration: { hours: 0, minutes: 30, seconds: 0 },
                 description: "Allure semi-marathon"
               },
               {
+                id: uuidv4(),
                 duration: { hours: 0, minutes: 2, seconds: 0 },
                 description: "Endurance fondamentale"
               }
@@ -46,7 +52,7 @@ const initialState = {
             occurences: 2
           }
         ]
-      }
+      },
     ]
   }
 };
@@ -77,7 +83,8 @@ store.subscribe(
 const theme = createMuiTheme({
   palette: {
     primary: yellow,
-    secondary: orange
+    secondary: orange,
+    ternary: "#FFFFFF"
   }
 });
 

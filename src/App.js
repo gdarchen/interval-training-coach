@@ -4,18 +4,31 @@ import React, { Suspense } from "react";
 import { connect } from "react-redux";
 import { HashRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
-import { saveTrainingAction } from "./redux/actions/trainingActions";
+import { saveIntervalToEditAction } from "./redux/actions/trainingActions";
 
 const AppShell = React.lazy(() => import("./common/app-shell/AppShell"));
 const Credits = React.lazy(() => import("./common/credits/Credits"));
 const Home = React.lazy(() => import("./pages/home/Home"));
+const TrainingCreation = React.lazy(() =>
+  import("./pages/training-creation/TrainingCreation")
+);
+const IntervalEditionModal = React.lazy(() =>
+  import("./common/interval-edition-modal/IntervalEditionModal")
+);
 
 const useStyles = makeStyles(theme => ({
   offset: theme.mixins.toolbar
 }));
 
-const App = ({ saveTrainingAction: saveTraining }) => {
+const App = ({
+  saveIntervalToEdit,
+  intervalToEdit
+}) => {
   const classes = useStyles();
+
+  const handleCloseModal = () => {
+    saveIntervalToEdit(null);
+  };
 
   // saveTraining({ teeeest: "tttttt" });
   return (
@@ -24,12 +37,19 @@ const App = ({ saveTrainingAction: saveTraining }) => {
         <AppShell />
 
         <div className={classNames(classes.offset, "App")}>
+          <IntervalEditionModal
+            isModalOpened={!!intervalToEdit}
+            handleCloseModal={handleCloseModal}
+          />
           <Switch>
+            <Route exact path="/">
+              <Home />
+            </Route>
             <Route path="/credits">
               <Credits />
             </Route>
-            <Route path="/">
-              <Home />
+            <Route path="/training-creation">
+              <TrainingCreation />
             </Route>
           </Switch>
         </div>
@@ -38,8 +58,13 @@ const App = ({ saveTrainingAction: saveTraining }) => {
   );
 };
 
-const mapDispatchToProps = dispatch => ({
-  saveTrainingAction: training => dispatch(saveTrainingAction(training))
+const mapStateToProps = state => ({
+  intervalToEdit: state.trainingReducer.intervalToEdit
 });
 
-export default connect(null, mapDispatchToProps)(App);
+const mapDispatchToProps = dispatch => ({
+  saveIntervalToEdit: interval =>
+    dispatch(saveIntervalToEditAction(interval))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

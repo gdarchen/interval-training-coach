@@ -16,6 +16,9 @@ const useStyles = makeStyles(theme => {
     autocomplete: {
       // width: 'unset !important',
       // maxWidth: '300px',
+      "& .MuiAutocomplete-clearIndicator > span.MuiIconButton-label": {
+        color: theme.palette.primary.main
+      },
       "& label, & .MuiAutocomplete-popupIndicator": {
         color: theme.palette.secondary.light
       },
