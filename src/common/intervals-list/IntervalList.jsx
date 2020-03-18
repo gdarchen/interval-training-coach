@@ -38,7 +38,6 @@ const IntervalList = ({
   saveIntervalToEditAction: saveIntervalToEdit
 }) => {
   const classes = useStyles();
-  console.log(training);
 
   if (!training) {
     return null;

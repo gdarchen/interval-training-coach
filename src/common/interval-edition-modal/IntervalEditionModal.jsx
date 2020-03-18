@@ -6,13 +6,12 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
-import React, { useState } from "react";
+import jp from "jsonpath";
+import isEqual from "lodash/isEqual";
+import React, { useState, useEffect } from "react";
 import DurationPicker from "react-duration-picker";
 import { connect } from "react-redux";
-import isEqual from "lodash/isEqual";
 import { saveTrainingInCreationAction } from "../../redux/actions/trainingActions";
-
-import jp from "jsonpath";
 
 window.jp = jp;
 
@@ -40,7 +39,7 @@ const useStyles = makeStyles(theme => ({
     letterSpacing: "0.03333em",
     marginLeft: 14,
     marginRight: 14,
-    color: '#f44336'
+    color: "#f44336"
   }
 }));
 
@@ -52,11 +51,22 @@ const IntervalEditionModal = ({
   saveTrainingInCreation
 }) => {
   const classes = useStyles();
-  const [description, setDescription] = useState();
+  const [description, setDescription] = useState(
+    (intervalToEdit && intervalToEdit.description) || ""
+  );
   const [duration, setDuration] = useState();
   const [isDescriptionInError, setIsDescriptionInError] = useState(false);
   const [isDurationInError, setIsDurationInError] = useState(false);
-  console.log(description);
+
+  useEffect(() => {
+    if (intervalToEdit && intervalToEdit.description) {
+      setDescription(intervalToEdit.description);
+    }
+
+    if (intervalToEdit && intervalToEdit.duration) {
+      setDuration(intervalToEdit.duration);
+    }
+  }, [intervalToEdit]);
 
   const onDescriptionChange = e => {
     setDescription(e.target.value);
@@ -93,11 +103,17 @@ const IntervalEditionModal = ({
         })
       );
       saveTrainingInCreation({ ...trainingInCreation });
+      setDuration(null);
+      setDescription("");
       handleCloseModal();
     }
   };
 
-  console.log(trainingInCreation);
+  const onCancel = () => {
+    setDescription("");
+    setDuration(null);
+    handleCloseModal();
+  };
 
   return (
     <Dialog open={isModalOpened} onClose={handleCloseModal}>
@@ -111,7 +127,7 @@ const IntervalEditionModal = ({
             variant="filled"
             label="Description"
             color="secondary"
-            defaultValue={intervalToEdit ? intervalToEdit.description : null}
+            value={description}
             onChange={onDescriptionChange}
             error={isDescriptionInError}
             helperText={
@@ -139,7 +155,7 @@ const IntervalEditionModal = ({
         </div>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleCloseModal}>Cancel</Button>
+        <Button onClick={onCancel}>Cancel</Button>
         <Button onClick={onValidateInterval} color="secondary">
           Update
         </Button>

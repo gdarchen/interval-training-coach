@@ -7,6 +7,16 @@ function saveTrainingAction(training) {
   };
 }
 
+function updateTrainingAction(id, training) {
+  return dispatch => {
+    dispatch({
+      type: "UPDATE_TRAINING",
+      id,
+      training
+    });
+  };
+}
+
 function saveSelectedTrainingAction(training) {
   return dispatch => {
     dispatch({
@@ -36,6 +46,7 @@ function saveTrainingInCreationAction(training) {
 
 export {
   saveTrainingAction,
+  updateTrainingAction,
   saveSelectedTrainingAction,
   saveIntervalToEditAction,
   saveTrainingInCreationAction

@@ -2,7 +2,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import classNames from "classnames";
 import React, { Suspense } from "react";
 import { connect } from "react-redux";
-import { HashRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
 import { saveIntervalToEditAction } from "./redux/actions/trainingActions";
 
@@ -12,18 +12,18 @@ const Home = React.lazy(() => import("./pages/home/Home"));
 const TrainingCreation = React.lazy(() =>
   import("./pages/training-creation/TrainingCreation")
 );
+const TrainingEdition = React.lazy(() =>
+  import("./pages/training-edition/TrainingEdition")
+);
 const IntervalEditionModal = React.lazy(() =>
   import("./common/interval-edition-modal/IntervalEditionModal")
 );
 
 const useStyles = makeStyles(theme => ({
-  offset: theme.mixins.toolbar
+  offset: theme.mixins.toolbar,
 }));
 
-const App = ({
-  saveIntervalToEdit,
-  intervalToEdit
-}) => {
+const App = ({ saveIntervalToEdit, intervalToEdit }) => {
   const classes = useStyles();
 
   const handleCloseModal = () => {
@@ -32,7 +32,7 @@ const App = ({
 
   // saveTraining({ teeeest: "tttttt" });
   return (
-    <Router basename="/">
+    <Router basename="/interval-training-coach">
       <Suspense fallback={<div>Loading...</div>}>
         <AppShell />
 
@@ -51,6 +51,9 @@ const App = ({
             <Route path="/training-creation">
               <TrainingCreation />
             </Route>
+            <Route path="/training-edition">
+              <TrainingEdition />
+            </Route>
           </Switch>
         </div>
       </Suspense>
@@ -63,8 +66,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  saveIntervalToEdit: interval =>
-    dispatch(saveIntervalToEditAction(interval))
+  saveIntervalToEdit: interval => dispatch(saveIntervalToEditAction(interval))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

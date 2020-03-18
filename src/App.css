@@ -1,8 +1,5 @@
 .App {
   text-align: center;
   color: white;
-}
-
-.speak-button {
-  font-size: calc(10px + 2vmin);
+  height: calc(100vh - 100px);
 }

@@ -5,7 +5,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 
 const useStyles = makeStyles(theme => {
-  console.log(theme);
   return {
     root: {
       marginTop: "20px",
@@ -32,7 +31,11 @@ const useStyles = makeStyles(theme => {
   };
 });
 
-const TrainingSelector = ({ trainings, onTrainingSelection }) => {
+const TrainingSelector = ({
+  trainings,
+  onTrainingSelection,
+  selectedTraining
+}) => {
   const classes = useStyles();
 
   if (!trainings || !trainings.length) {
@@ -45,8 +48,10 @@ const TrainingSelector = ({ trainings, onTrainingSelection }) => {
         options={trainings}
         className={classes.autocomplete}
         getOptionLabel={option => option.name}
+        getOptionSelected={option => option.name === selectedTraining.name}
         onChange={onTrainingSelection}
         style={{ width: 300 }}
+        value={selectedTraining || null}
         renderInput={params => (
           <TextField {...params} label="Select a training" variant="outlined" />
         )}

@@ -36,7 +36,19 @@ const Home = ({
       onClick: () => history.push("/training-creation")
     },
     ...(selectedTraining
-      ? [{ icon: <EditIcon />, name: "Edit this training" }]
+      ? [
+          {
+            icon: <EditIcon />,
+            name: "Edit this training",
+            onClick: () =>
+              history.push({
+                pathname: "/training-edition",
+                state: {
+                  trainingToEdit: selectedTraining
+                }
+              })
+          }
+        ]
       : [])
   ];
 
@@ -58,7 +70,10 @@ const Home = ({
     <>
       <button onClick={speak}>Speech-to-text</button>
 
-      <TrainingSelector onTrainingSelection={onTrainingSelection} />
+      <TrainingSelector
+        onTrainingSelection={onTrainingSelection}
+        selectedTraining={selectedTraining}
+      />
 
       <IntervalList training={selectedTraining} />
 

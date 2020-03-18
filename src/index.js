@@ -1,3 +1,5 @@
+import { orange, yellow } from "@material-ui/core/colors";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import throttle from "lodash/throttle";
 import React from "react";
 import ReactDOM from "react-dom";
@@ -7,54 +9,58 @@ import thunk from "redux-thunk";
 import App from "./App";
 import { loadState, saveState } from "./core/localStorage";
 import "./index.css";
-import * as serviceWorker from "./serviceWorker";
 import trainingReducer from "./redux/reducers/trainingReducer";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
-import { yellow, orange } from "@material-ui/core/colors";
-import {v4 as uuidv4} from "uuid";
+import * as serviceWorker from "./serviceWorker";
 
 // Load the persisted state from the previous session
 const persistedState = loadState();
-
 // Build the initial Redux state
 const initialState = {
   ...persistedState,
-  trainingReducer: {
-    trainings: [
-      {
-        id: uuidv4(),
-        name: "Entrainement test 1",
-        periods: [
-          {
-            id: uuidv4(),
-            group: [
-              {
-                id: uuidv4(),
-                duration: { hours: 0, minutes: 20, seconds: 0 },
-                description: "Endurance fondamentale"
-              }
-            ],
-            occurences: 1
-          },
-          {
-            group: [
-              {
-                id: uuidv4(),
-                duration: { hours: 0, minutes: 30, seconds: 0 },
-                description: "Allure semi-marathon"
-              },
-              {
-                id: uuidv4(),
-                duration: { hours: 0, minutes: 2, seconds: 0 },
-                description: "Endurance fondamentale"
-              }
-            ],
-            occurences: 2
-          }
-        ]
-      },
-    ]
-  }
+  ...(!(
+    persistedState &&
+    persistedState.trainingReducer &&
+    persistedState.trainingReducer.trainings.length
+  )
+    ? {
+        trainingReducer: {
+          trainings: [
+            {
+              id: "f541eb16-aaca-49c7-ab88-549252bce27c",
+              name: "Entrainement test 1",
+              periods: [
+                {
+                  id: "6f835219-8a96-4ad6-8f80-56084631c553",
+                  group: [
+                    {
+                      id: "bf47545a-15fa-4b7d-9e49-3dbb90349ea9",
+                      duration: { hours: 0, minutes: 20, seconds: 0 },
+                      description: "Endurance fondamentale"
+                    }
+                  ],
+                  occurences: 1
+                },
+                {
+                  group: [
+                    {
+                      id: "41f2e79e-bb45-43f3-8a4a-c3932fbf5e5a",
+                      duration: { hours: 0, minutes: 30, seconds: 0 },
+                      description: "Allure semi-marathon"
+                    },
+                    {
+                      id: "8a0175a2-fdcd-4fe7-b8dd-bc7b724305e4",
+                      duration: { hours: 0, minutes: 2, seconds: 0 },
+                      description: "Endurance fondamentale"
+                    }
+                  ],
+                  occurences: 2
+                }
+              ]
+            }
+          ]
+        }
+      }
+    : [])
 };
 
 // Load the Redux reducers and combine them

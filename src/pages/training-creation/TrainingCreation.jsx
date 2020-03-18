@@ -1,21 +1,28 @@
+import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import React, { useState } from "react";
-import IntervalList from "../../common/intervals-list/IntervalList";
-import { v4 as uuidv4 } from "uuid";
-import { saveTrainingInCreationAction } from "../../redux/actions/trainingActions";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
+import { v4 as uuidv4 } from "uuid";
+import IntervalList from "../../common/intervals-list/IntervalList";
+import {
+  saveTrainingAction,
+  saveTrainingInCreationAction,
+  updateTrainingAction,
+  saveSelectedTrainingAction
+} from "../../redux/actions/trainingActions";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
   root: {
     marginTop: 20,
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "column"
+    flexDirection: "column",
+    height: "100%"
   },
   trainingTitle: {
+    marginBottom: 10,
     "& label": {
       color: theme.palette.secondary.light
     },
@@ -32,18 +39,45 @@ const useStyles = makeStyles(theme => ({
   validateButton: {
     position: "absolute",
     bottom: theme.spacing(2)
+  },
+  intervalCreatorContainer: {
+    maxHeight: "75%",
+    overflow: "auto"
   }
 }));
 
-const TrainingCreation = ({ trainingInCreation, saveTrainingInCreation }) => {
+const TrainingCreation = ({
+  trainingInCreation,
+  saveTrainingInCreation,
+  saveTraining,
+  updateTraining,
+  saveSelectedTraining,
+  trainingToEdit = null,
+  isEditionMode = false
+}) => {
   const classes = useStyles();
 
-  console.log("tic", trainingInCreation);
-
+  console.log(trainingInCreation);
   const [wasSaveClicked, setWasSaveClicked] = useState(false);
+  const history = useHistory();
+
+  useEffect(() => {
+    saveTrainingInCreation(trainingToEdit);
+  }, [trainingToEdit, saveTrainingInCreation]);
 
   const onSaveButtonClick = () => {
     setWasSaveClicked(true);
+    if (trainingInCreation) {
+      // Creation mode
+      if (!isEditionMode) {
+        saveTraining(trainingInCreation);
+      } else if (trainingToEdit) {
+        // Edit mode
+        updateTraining(trainingToEdit.id, trainingInCreation);
+        saveSelectedTraining(trainingInCreation);
+        history.push("/");
+      }
+    }
   };
 
   const onEditTrainingName = e => {
@@ -81,6 +115,15 @@ const TrainingCreation = ({ trainingInCreation, saveTrainingInCreation }) => {
   const isTrainingNameInError =
     wasSaveClicked && !(trainingInCreation && trainingInCreation.name);
 
+  const hasEmptyPeriods =
+    trainingInCreation &&
+    trainingInCreation.periods.some(p => {
+      return p.group.some(
+        interval => interval.duration === null || interval.description === null
+      );
+    });
+  console.log(hasEmptyPeriods);
+
   return (
     <div className={classes.root}>
       <TextField
@@ -88,12 +131,15 @@ const TrainingCreation = ({ trainingInCreation, saveTrainingInCreation }) => {
         label="Training name"
         variant="outlined"
         className={classes.trainingTitle}
+        value={(trainingInCreation && trainingInCreation.name) || ""}
         helperText={isTrainingNameInError ? "Cannot be empty." : null}
         onChange={onEditTrainingName}
         error={isTrainingNameInError}
       />
 
-      <IntervalList isEditMode training={trainingInCreation} />
+      <div className={classes.intervalCreatorContainer}>
+        <IntervalList isEditMode training={trainingInCreation} />
+      </div>
 
       <Button
         color="primary"
@@ -108,8 +154,9 @@ const TrainingCreation = ({ trainingInCreation, saveTrainingInCreation }) => {
         color="primary"
         className={classes.validateButton}
         onClick={onSaveButtonClick}
+        disabled={!trainingInCreation || hasEmptyPeriods}
       >
-        Save
+        {isEditionMode ? "Update" : "Save"}
       </Button>
     </div>
   );
@@ -121,7 +168,11 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   saveTrainingInCreation: training =>
-    dispatch(saveTrainingInCreationAction(training))
+    dispatch(saveTrainingInCreationAction(training)),
+  saveTraining: training => dispatch(saveTrainingAction(training)),
+  saveSelectedTraining: training =>
+    dispatch(saveSelectedTrainingAction(training)),
+  updateTraining: (id, training) => dispatch(updateTrainingAction(id, training))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TrainingCreation);
