@@ -42,3 +42,7 @@ export const deleteIntervalOrPeriod = (intervalId, trainings) => {
 
   return newTrainings;
 };
+
+export const deleteTrainingById = (trainings, trainingToDeleteId) => {
+  return trainings.filter(training => training.id !== trainingToDeleteId);
+};

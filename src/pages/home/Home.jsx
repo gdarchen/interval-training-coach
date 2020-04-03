@@ -1,5 +1,6 @@
 import { makeStyles } from "@material-ui/core/styles";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
+import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import SpeedDial from "@material-ui/lab/SpeedDial";
 import SpeedDialAction from "@material-ui/lab/SpeedDialAction";
@@ -9,7 +10,10 @@ import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import IntervalList from "../../common/intervals-list/IntervalList";
 import TrainingSelector from "../../common/training-selector/TrainingSelector";
-import { saveSelectedTrainingAction } from "../../redux/actions/trainingActions";
+import {
+  saveSelectedTrainingAction,
+  deleteTrainingAction
+} from "../../redux/actions/trainingActions";
 import { speak } from "../../utils/textToSpeechUtils";
 
 const useStyles = makeStyles(theme => ({
@@ -24,7 +28,9 @@ const useStyles = makeStyles(theme => ({
 
 const Home = ({
   selectedTraining,
-  saveSelectedTrainingAction: saveSelectedTraining
+  trainings,
+  saveSelectedTraining,
+  deleteTraining
 }) => {
   const classes = useStyles();
   const history = useHistory();
@@ -47,6 +53,18 @@ const Home = ({
                   trainingToEdit: selectedTraining
                 }
               })
+          }
+        ]
+      : []),
+    ...(selectedTraining && trainings && trainings.length > 1
+      ? [
+          {
+            icon: <DeleteIcon />,
+            name: "Delete this training",
+            onClick: () => {
+              deleteTraining(selectedTraining.id);
+              saveSelectedTraining(null);
+            }
           }
         ]
       : [])
@@ -100,12 +118,14 @@ const Home = ({
 };
 
 const mapStateToProps = state => ({
-  selectedTraining: state.trainingReducer.selectedTraining
+  selectedTraining: state.trainingReducer.selectedTraining,
+  trainings: state.trainingReducer.trainings
 });
 
 const mapDispatchToProps = dispatch => ({
-  saveSelectedTrainingAction: training =>
-    dispatch(saveSelectedTrainingAction(training))
+  saveSelectedTraining: training =>
+    dispatch(saveSelectedTrainingAction(training)),
+  deleteTraining: trainingId => dispatch(deleteTrainingAction(trainingId))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

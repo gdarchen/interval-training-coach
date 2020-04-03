@@ -53,11 +53,21 @@ function saveTrainingInCreationAction(training) {
   };
 }
 
+function deleteTrainingAction(trainingId) {
+  return dispatch => {
+    dispatch({
+      type: "DELETE_TRAINING",
+      trainingId
+    });
+  };
+}
+
 export {
   saveTrainingAction,
   updateTrainingAction,
   saveSelectedTrainingAction,
   deleteIntervalAction,
   saveIntervalToEditAction,
-  saveTrainingInCreationAction
+  saveTrainingInCreationAction,
+  deleteTrainingAction
 };
