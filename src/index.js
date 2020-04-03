@@ -41,6 +41,7 @@ const initialState = {
                   occurences: 1
                 },
                 {
+                  id: "65c62e09-532c-4427-84fa-70d39228653a",
                   group: [
                     {
                       id: "41f2e79e-bb45-43f3-8a4a-c3932fbf5e5a",

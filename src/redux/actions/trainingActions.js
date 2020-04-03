@@ -35,6 +35,15 @@ function saveIntervalToEditAction(interval) {
   };
 }
 
+function deleteIntervalAction(intervalId) {
+  return dispatch => {
+    dispatch({
+      type: "DELETE_INTERVAL",
+      intervalId
+    });
+  };
+}
+
 function saveTrainingInCreationAction(training) {
   return dispatch => {
     dispatch({
@@ -48,6 +57,7 @@ export {
   saveTrainingAction,
   updateTrainingAction,
   saveSelectedTrainingAction,
+  deleteIntervalAction,
   saveIntervalToEditAction,
   saveTrainingInCreationAction
 };

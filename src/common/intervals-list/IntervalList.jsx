@@ -6,7 +6,10 @@ import React from "react";
 import { connect } from "react-redux";
 import { saveIntervalToEditAction } from "../../redux/actions/trainingActions";
 import { formatDuration } from "../../utils/durationUtils";
-import { formatIntervalToSpeechText, speak } from "../../utils/textToSpeechUtils";
+import {
+  formatIntervalToSpeechText,
+  speak
+} from "../../utils/textToSpeechUtils";
 import IntervalListItem from "./IntervalListItem";
 import IntervalOccurences from "./IntervalOccurence";
 
@@ -71,6 +74,7 @@ const IntervalList = ({
                       )}-${JSON.stringify(interval.occurences)}`}
                     >
                       <IntervalListItem
+                        intervalId={interval.id}
                         formattedDuration={
                           interval.duration
                             ? formatDuration(interval.duration)

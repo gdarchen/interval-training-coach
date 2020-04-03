@@ -57,7 +57,6 @@ const TrainingCreation = ({
 }) => {
   const classes = useStyles();
 
-  console.log(trainingInCreation);
   const [wasSaveClicked, setWasSaveClicked] = useState(false);
   const history = useHistory();
 
@@ -122,7 +121,6 @@ const TrainingCreation = ({
         interval => interval.duration === null || interval.description === null
       );
     });
-  console.log(hasEmptyPeriods);
 
   return (
     <div className={classes.root}>

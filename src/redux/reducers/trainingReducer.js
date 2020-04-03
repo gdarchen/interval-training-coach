@@ -1,4 +1,5 @@
 import jp from "jsonpath";
+import { deleteIntervalOrPeriod } from "../../utils/intervalUtils";
 
 const trainingReducer = (state = {}, action) => {
   switch (action.type) {
@@ -17,6 +18,12 @@ const trainingReducer = (state = {}, action) => {
       return { ...state, intervalToEdit: action.interval };
     case "SAVE_TRAINING_IN_CREATION":
       return { ...state, trainingInCreation: action.training };
+    case "DELETE_INTERVAL":
+      const updatedTrainings = deleteIntervalOrPeriod(
+        action.intervalId,
+        state.trainingInCreation
+      );
+      return { ...state, trainingInCreation: { ...updatedTrainings } };
     default:
       return state;
   }
