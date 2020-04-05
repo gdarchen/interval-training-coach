@@ -11,10 +11,9 @@ import { useHistory } from "react-router-dom";
 import IntervalList from "../../common/intervals-list/IntervalList";
 import TrainingSelector from "../../common/training-selector/TrainingSelector";
 import {
-  saveSelectedTrainingAction,
   deleteTrainingAction,
+  saveSelectedTrainingAction,
 } from "../../redux/actions/trainingActions";
-import { speak } from "../../utils/textToSpeechUtils";
 
 const useStyles = makeStyles((theme) => ({
   speedDial: {

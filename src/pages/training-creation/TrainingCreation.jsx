@@ -36,6 +36,10 @@ const useStyles = makeStyles((theme) => ({
   addIntervalButton: {
     marginTop: 20,
   },
+  repeatIntervalsButton: {
+    marginTop: 20,
+    marginLeft: 60,
+  },
   validateButton: {
     position: "absolute",
     bottom: theme.spacing(2),
@@ -44,6 +48,7 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: "75%",
     overflow: "auto",
   },
+  mainActionsContainer: {},
 }));
 
 const TrainingCreation = ({
@@ -141,13 +146,23 @@ const TrainingCreation = ({
         <IntervalList isEditMode training={trainingInCreation} />
       </div>
 
-      <Button
-        color="primary"
-        className={classes.addIntervalButton}
-        onClick={onAddIntervalClick}
-      >
-        Add an interval
-      </Button>
+      <div className={classes.mainActionsContainer}>
+        <Button
+          color="primary"
+          className={classes.addIntervalButton}
+          onClick={onAddIntervalClick}
+        >
+          Add an interval
+        </Button>
+
+        <Button
+          color="primary"
+          className={classes.repeatIntervalsButton}
+          onClick={() => {}}
+        >
+          Repeat intervals
+        </Button>
+      </div>
 
       <Button
         variant="contained"
