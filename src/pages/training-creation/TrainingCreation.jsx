@@ -9,41 +9,41 @@ import {
   saveTrainingAction,
   saveTrainingInCreationAction,
   updateTrainingAction,
-  saveSelectedTrainingAction
+  saveSelectedTrainingAction,
 } from "../../redux/actions/trainingActions";
 import { useHistory } from "react-router-dom";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: 20,
     display: "flex",
     alignItems: "center",
     flexDirection: "column",
-    height: "100%"
+    height: "100%",
   },
   trainingTitle: {
     marginBottom: 10,
     "& label": {
-      color: theme.palette.secondary.light
+      color: theme.palette.secondary.light,
     },
     "& .MuiOutlinedInput-root:not(.Mui-focused):not(.Mui-error) .MuiOutlinedInput-notchedOutline, & .MuiInoutBase-root:hover": {
-      borderColor: theme.palette.secondary.light
+      borderColor: theme.palette.secondary.light,
     },
     "& input": {
-      color: theme.palette.primary.main
-    }
+      color: theme.palette.primary.main,
+    },
   },
   addIntervalButton: {
-    marginTop: 20
+    marginTop: 20,
   },
   validateButton: {
     position: "absolute",
-    bottom: theme.spacing(2)
+    bottom: theme.spacing(2),
   },
   intervalCreatorContainer: {
     maxHeight: "75%",
-    overflow: "auto"
-  }
+    overflow: "auto",
+  },
 }));
 
 const TrainingCreation = ({
@@ -53,7 +53,7 @@ const TrainingCreation = ({
   updateTraining,
   saveSelectedTraining,
   trainingToEdit = null,
-  isEditionMode = false
+  isEditionMode = false,
 }) => {
   const classes = useStyles();
 
@@ -79,14 +79,14 @@ const TrainingCreation = ({
     }
   };
 
-  const onEditTrainingName = e => {
+  const onEditTrainingName = (e) => {
     setWasSaveClicked(false);
     saveTrainingInCreation({
       name: e.target.value,
       periods:
         trainingInCreation && trainingInCreation.periods
           ? [...trainingInCreation.periods]
-          : []
+          : [],
     });
   };
 
@@ -97,17 +97,17 @@ const TrainingCreation = ({
         {
           id: uuidv4(),
           duration: null,
-          description: null
-        }
+          description: null,
+        },
       ],
-      occurences: 1
+      occurences: 1,
     };
     saveTrainingInCreation({
       ...trainingInCreation,
       periods:
         trainingInCreation && trainingInCreation.periods
           ? [...trainingInCreation.periods, newInterval]
-          : [newInterval]
+          : [newInterval],
     });
   };
 
@@ -116,9 +116,11 @@ const TrainingCreation = ({
 
   const hasEmptyPeriods =
     trainingInCreation &&
-    trainingInCreation.periods.some(p => {
+    trainingInCreation.periods &&
+    trainingInCreation.periods.some((p) => {
       return p.group.some(
-        interval => interval.duration === null || interval.description === null
+        (interval) =>
+          interval.duration === null || interval.description === null
       );
     });
 
@@ -160,17 +162,18 @@ const TrainingCreation = ({
   );
 };
 
-const mapStateToProps = state => ({
-  trainingInCreation: state.trainingReducer.trainingInCreation
+const mapStateToProps = (state) => ({
+  trainingInCreation: state.trainingReducer.trainingInCreation,
 });
 
-const mapDispatchToProps = dispatch => ({
-  saveTrainingInCreation: training =>
+const mapDispatchToProps = (dispatch) => ({
+  saveTrainingInCreation: (training) =>
     dispatch(saveTrainingInCreationAction(training)),
-  saveTraining: training => dispatch(saveTrainingAction(training)),
-  saveSelectedTraining: training =>
+  saveTraining: (training) => dispatch(saveTrainingAction(training)),
+  saveSelectedTraining: (training) =>
     dispatch(saveSelectedTrainingAction(training)),
-  updateTraining: (id, training) => dispatch(updateTrainingAction(id, training))
+  updateTraining: (id, training) =>
+    dispatch(updateTrainingAction(id, training)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TrainingCreation);

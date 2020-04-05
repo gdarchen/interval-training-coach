@@ -12,25 +12,25 @@ import IntervalList from "../../common/intervals-list/IntervalList";
 import TrainingSelector from "../../common/training-selector/TrainingSelector";
 import {
   saveSelectedTrainingAction,
-  deleteTrainingAction
+  deleteTrainingAction,
 } from "../../redux/actions/trainingActions";
 import { speak } from "../../utils/textToSpeechUtils";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   speedDial: {
     position: "absolute",
     "&.MuiSpeedDial-directionUp": {
       bottom: theme.spacing(2),
-      right: theme.spacing(2)
-    }
-  }
+      right: theme.spacing(2),
+    },
+  },
 }));
 
 const Home = ({
   selectedTraining,
   trainings,
   saveSelectedTraining,
-  deleteTraining
+  deleteTraining,
 }) => {
   const classes = useStyles();
   const history = useHistory();
@@ -39,7 +39,7 @@ const Home = ({
     {
       icon: <AddCircleIcon />,
       name: "Create a training",
-      onClick: () => history.push("/training-creation")
+      onClick: () => history.push("/training-creation"),
     },
     ...(selectedTraining
       ? [
@@ -50,10 +50,10 @@ const Home = ({
               history.push({
                 pathname: "/training-edition",
                 state: {
-                  trainingToEdit: selectedTraining
-                }
-              })
-          }
+                  trainingToEdit: selectedTraining,
+                },
+              }),
+          },
         ]
       : []),
     ...(selectedTraining && trainings && trainings.length > 1
@@ -64,10 +64,10 @@ const Home = ({
             onClick: () => {
               deleteTraining(selectedTraining.id);
               saveSelectedTraining(null);
-            }
-          }
+            },
+          },
         ]
-      : [])
+      : []),
   ];
 
   const [isDialOpened, setIsDialOpened] = useState(false);
@@ -86,8 +86,6 @@ const Home = ({
 
   return (
     <>
-      <button onClick={speak}>Speech-to-text</button>
-
       <TrainingSelector
         onTrainingSelection={onTrainingSelection}
         selectedTraining={selectedTraining}
@@ -104,7 +102,7 @@ const Home = ({
         open={isDialOpened}
         direction="up"
       >
-        {actions.map(action => (
+        {actions.map((action) => (
           <SpeedDialAction
             key={action.name}
             icon={action.icon}
@@ -117,15 +115,15 @@ const Home = ({
   );
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   selectedTraining: state.trainingReducer.selectedTraining,
-  trainings: state.trainingReducer.trainings
+  trainings: state.trainingReducer.trainings,
 });
 
-const mapDispatchToProps = dispatch => ({
-  saveSelectedTraining: training =>
+const mapDispatchToProps = (dispatch) => ({
+  saveSelectedTraining: (training) =>
     dispatch(saveSelectedTrainingAction(training)),
-  deleteTraining: trainingId => dispatch(deleteTrainingAction(trainingId))
+  deleteTraining: (trainingId) => dispatch(deleteTrainingAction(trainingId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
