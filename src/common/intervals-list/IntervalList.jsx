@@ -1,8 +1,9 @@
+import Button from "@material-ui/core/Button";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import { makeStyles } from "@material-ui/core/styles";
-import arrayMove from "array-move";
 import ReorderIcon from "@material-ui/icons/Reorder";
+import arrayMove from "array-move";
 import classNames from "classnames";
 import React from "react";
 import { connect } from "react-redux";
@@ -53,6 +54,12 @@ const useStyles = makeStyles({
   occurencesListItem: {
     paddingTop: 0,
     paddingBottom: 0,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  editOccurences: {
+    marginLeft: 20,
   },
 });
 
@@ -61,6 +68,7 @@ const IntervalList = ({
   isEditMode,
   saveIntervalToEdit,
   saveTrainingInCreation,
+  isRepeatEditionMode,
 }) => {
   const classes = useStyles();
 
@@ -115,6 +123,14 @@ const IntervalList = ({
             className={classNames(classes.listItem, classes.occurencesListItem)}
           >
             <IntervalOccurences occurences={period.occurences} />
+            {isRepeatEditionMode && (
+              <Button
+                color="primary"
+                className={classes.editOccurences}
+              >
+                Edit occurences
+              </Button>
+            )}
           </ListItem>
         )}
       </List>
@@ -159,6 +175,10 @@ const IntervalList = ({
       )}
     </div>
   );
+};
+
+IntervalList.defaultProps = {
+  isRepeatEditionMode: false,
 };
 
 const mapDispatchToProps = (dispatch) => ({

@@ -63,6 +63,7 @@ const TrainingCreation = ({
   const classes = useStyles();
 
   const [wasSaveClicked, setWasSaveClicked] = useState(false);
+  const [isRepeatEditionActive, setIsRepeatEditionActive] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
@@ -129,6 +130,10 @@ const TrainingCreation = ({
       );
     });
 
+  const onRepeatIntervalClick = () => {
+    setIsRepeatEditionActive((prev) => !prev);
+  };
+
   return (
     <div className={classes.root}>
       <TextField
@@ -143,7 +148,11 @@ const TrainingCreation = ({
       />
 
       <div className={classes.intervalCreatorContainer}>
-        <IntervalList isEditMode training={trainingInCreation} />
+        <IntervalList
+          isEditMode
+          isRepeatEditionMode={isRepeatEditionActive}
+          training={trainingInCreation}
+        />
       </div>
 
       <div className={classes.mainActionsContainer}>
@@ -158,9 +167,10 @@ const TrainingCreation = ({
         <Button
           color="primary"
           className={classes.repeatIntervalsButton}
-          onClick={() => {}}
+          variant={isRepeatEditionActive ? "outlined" : "text"}
+          onClick={onRepeatIntervalClick}
         >
-          Repeat intervals
+          {isRepeatEditionActive ? "Save repeats" : "Repeat intervals"}
         </Button>
       </div>
 
