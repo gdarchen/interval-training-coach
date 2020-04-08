@@ -1,7 +1,8 @@
 import jp from "jsonpath";
 import {
   deleteIntervalOrPeriod,
-  deleteTrainingById
+  deleteTrainingById,
+  updatePeriodOccurences,
 } from "../../utils/intervalUtils";
 
 const trainingReducer = (state = {}, action) => {
@@ -10,9 +11,9 @@ const trainingReducer = (state = {}, action) => {
       return { ...state, trainings: [...state.trainings, action.training] };
     case "UPDATE_TRAINING":
       const newTrainings = state.trainings;
-      jp.apply(newTrainings, `$[?(@.id == '${action.id}')]`, value => ({
+      jp.apply(newTrainings, `$[?(@.id == '${action.id}')]`, (value) => ({
         id: action.id,
-        ...action.training
+        ...action.training,
       }));
       return { ...state, trainings: [...newTrainings] };
     case "SAVE_SELECTED_TRAINING":
@@ -26,10 +27,9 @@ const trainingReducer = (state = {}, action) => {
         state.trainings,
         action.trainingId
       );
-      console.log(updatedTrainingsAfterTrainingDeletion);
       return {
         ...state,
-        trainings: [...updatedTrainingsAfterTrainingDeletion]
+        trainings: [...updatedTrainingsAfterTrainingDeletion],
       };
     case "DELETE_INTERVAL":
       const updatedTrainingsAfterIntervalDeletion = deleteIntervalOrPeriod(
@@ -38,7 +38,19 @@ const trainingReducer = (state = {}, action) => {
       );
       return {
         ...state,
-        trainingInCreation: { ...updatedTrainingsAfterIntervalDeletion }
+        trainingInCreation: { ...updatedTrainingsAfterIntervalDeletion },
+      };
+    case "SAVE_PERIOD_IN_OCCURENCE_EDITION":
+      return { ...state, periodInOccurenceEdition: action.period };
+    case "UPDATE_PERIOD_OCCURENCES":
+      const updatedTrainingsAfterPeriodOccurenceEdition = updatePeriodOccurences(
+        state.trainingInCreation,
+        action.periodId,
+        action.occurences
+      );
+      return {
+        ...state,
+        trainingInCreation: { ...updatedTrainingsAfterPeriodOccurenceEdition },
       };
     default:
       return state;

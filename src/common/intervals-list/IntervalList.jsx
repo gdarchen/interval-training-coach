@@ -15,6 +15,7 @@ import {
 import {
   saveIntervalToEditAction,
   saveTrainingInCreationAction,
+  savePeriodInOccurenceEditionAction,
 } from "../../redux/actions/trainingActions";
 import { formatDuration } from "../../utils/durationUtils";
 import {
@@ -69,6 +70,7 @@ const IntervalList = ({
   saveIntervalToEdit,
   saveTrainingInCreation,
   isRepeatEditionMode,
+  savePeriodInOccurenceEdition,
 }) => {
   const classes = useStyles();
 
@@ -127,6 +129,7 @@ const IntervalList = ({
               <Button
                 color="primary"
                 className={classes.editOccurences}
+                onClick={() => savePeriodInOccurenceEdition(period)}
               >
                 Edit occurences
               </Button>
@@ -186,6 +189,8 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(saveIntervalToEditAction(interval)),
   saveTrainingInCreation: (training) =>
     dispatch(saveTrainingInCreationAction(training)),
+  savePeriodInOccurenceEdition: (period) =>
+    dispatch(savePeriodInOccurenceEditionAction(period)),
 });
 
 export default connect(null, mapDispatchToProps)(IntervalList);

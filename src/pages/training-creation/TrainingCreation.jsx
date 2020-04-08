@@ -3,15 +3,16 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import IntervalList from "../../common/intervals-list/IntervalList";
 import {
+  saveSelectedTrainingAction,
   saveTrainingAction,
   saveTrainingInCreationAction,
   updateTrainingAction,
-  saveSelectedTrainingAction,
 } from "../../redux/actions/trainingActions";
-import { useHistory } from "react-router-dom";
+import EditOccurencesDialog from "../training-edition/EditOccurencesDialog";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -59,6 +60,7 @@ const TrainingCreation = ({
   saveSelectedTraining,
   trainingToEdit = null,
   isEditionMode = false,
+  periodInOccurenceEdition,
 }) => {
   const classes = useStyles();
 
@@ -135,60 +137,65 @@ const TrainingCreation = ({
   };
 
   return (
-    <div className={classes.root}>
-      <TextField
-        id="outlined-basic"
-        label="Training name"
-        variant="outlined"
-        className={classes.trainingTitle}
-        value={(trainingInCreation && trainingInCreation.name) || ""}
-        helperText={isTrainingNameInError ? "Cannot be empty." : null}
-        onChange={onEditTrainingName}
-        error={isTrainingNameInError}
-      />
-
-      <div className={classes.intervalCreatorContainer}>
-        <IntervalList
-          isEditMode
-          isRepeatEditionMode={isRepeatEditionActive}
-          training={trainingInCreation}
+    <>
+      <div className={classes.root}>
+        <TextField
+          id="outlined-basic"
+          label="Training name"
+          variant="outlined"
+          className={classes.trainingTitle}
+          value={(trainingInCreation && trainingInCreation.name) || ""}
+          helperText={isTrainingNameInError ? "Cannot be empty." : null}
+          onChange={onEditTrainingName}
+          error={isTrainingNameInError}
         />
+
+        <div className={classes.intervalCreatorContainer}>
+          <IntervalList
+            isEditMode
+            isRepeatEditionMode={isRepeatEditionActive}
+            training={trainingInCreation}
+          />
+        </div>
+
+        <div className={classes.mainActionsContainer}>
+          <Button
+            color="primary"
+            className={classes.addIntervalButton}
+            onClick={onAddIntervalClick}
+          >
+            Add an interval
+          </Button>
+
+          <Button
+            color="primary"
+            className={classes.repeatIntervalsButton}
+            variant={isRepeatEditionActive ? "outlined" : "text"}
+            onClick={onRepeatIntervalClick}
+          >
+            {isRepeatEditionActive ? "Save repeats" : "Repeat intervals"}
+          </Button>
+        </div>
+
+        <Button
+          variant="contained"
+          color="primary"
+          className={classes.validateButton}
+          onClick={onSaveButtonClick}
+          disabled={!trainingInCreation || hasEmptyPeriods}
+        >
+          {isEditionMode ? "Update" : "Save"}
+        </Button>
       </div>
 
-      <div className={classes.mainActionsContainer}>
-        <Button
-          color="primary"
-          className={classes.addIntervalButton}
-          onClick={onAddIntervalClick}
-        >
-          Add an interval
-        </Button>
-
-        <Button
-          color="primary"
-          className={classes.repeatIntervalsButton}
-          variant={isRepeatEditionActive ? "outlined" : "text"}
-          onClick={onRepeatIntervalClick}
-        >
-          {isRepeatEditionActive ? "Save repeats" : "Repeat intervals"}
-        </Button>
-      </div>
-
-      <Button
-        variant="contained"
-        color="primary"
-        className={classes.validateButton}
-        onClick={onSaveButtonClick}
-        disabled={!trainingInCreation || hasEmptyPeriods}
-      >
-        {isEditionMode ? "Update" : "Save"}
-      </Button>
-    </div>
+      <EditOccurencesDialog periodToEdit={periodInOccurenceEdition} />
+    </>
   );
 };
 
 const mapStateToProps = (state) => ({
   trainingInCreation: state.trainingReducer.trainingInCreation,
+  periodInOccurenceEdition: state.trainingReducer.periodInOccurenceEdition,
 });
 
 const mapDispatchToProps = (dispatch) => ({
