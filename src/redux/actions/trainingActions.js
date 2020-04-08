@@ -62,6 +62,15 @@ function deleteTrainingAction(trainingId) {
   };
 }
 
+function deletePeriodAction(periodId) {
+  return (dispatch) => {
+    dispatch({
+      type: "DELETE_PERIOD",
+      periodId,
+    });
+  };
+}
+
 function savePeriodInOccurenceEditionAction(period) {
   return (dispatch) => {
     dispatch({
@@ -90,5 +99,6 @@ export {
   saveTrainingInCreationAction,
   savePeriodInOccurenceEditionAction,
   deleteTrainingAction,
+  deletePeriodAction,
   updatePeriodOccurencesAction,
 };

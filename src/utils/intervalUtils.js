@@ -17,7 +17,7 @@ export const deleteIntervalOrPeriod = (intervalId, trainings) => {
   // Get the period containing the interval
   const period = jp.value(trainings, nodes);
 
-  // If this interval is the only one in the group, we remove the whole group
+  // If this interval is the only one in the group, we remove the whole period
   if (group && group.length === 1) {
     // Pop the node once more to mount up to the periods array
     nodes.pop();
@@ -57,5 +57,11 @@ export const updatePeriodOccurences = (training, periodId, occurences) => {
     ...value,
     occurences,
   }));
+  return newTraining;
+};
+
+export const deletePeriod = (periodId, training) => {
+  const newTraining = training;
+  newTraining.periods = training.periods.filter((p) => p.id !== periodId);
   return newTraining;
 };

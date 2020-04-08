@@ -88,8 +88,6 @@ const EditOccurencesDialog = ({
     savePeriodInOccurenceEdition(null);
   };
 
-  console.log(periodToEdit);
-
   return (
     <Dialog open={!!periodToEdit} scroll="paper">
       <DialogTitle>Edit occurences number</DialogTitle>

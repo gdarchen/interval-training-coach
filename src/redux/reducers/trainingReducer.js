@@ -3,6 +3,7 @@ import {
   deleteIntervalOrPeriod,
   deleteTrainingById,
   updatePeriodOccurences,
+  deletePeriod,
 } from "../../utils/intervalUtils";
 
 const trainingReducer = (state = {}, action) => {
@@ -39,6 +40,15 @@ const trainingReducer = (state = {}, action) => {
       return {
         ...state,
         trainingInCreation: { ...updatedTrainingsAfterIntervalDeletion },
+      };
+    case "DELETE_PERIOD":
+      const updatedTrainingAfterPeriodDeletion = deletePeriod(
+        action.periodId,
+        state.trainingInCreation
+      );
+      return {
+        ...state,
+        trainingInCreation: { ...updatedTrainingAfterPeriodDeletion },
       };
     case "SAVE_PERIOD_IN_OCCURENCE_EDITION":
       return { ...state, periodInOccurenceEdition: action.period };

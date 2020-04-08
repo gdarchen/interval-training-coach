@@ -1,4 +1,4 @@
-import Button from "@material-ui/core/Button";
+import { Button, ButtonGroup } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import React, { useEffect, useState } from "react";
@@ -11,6 +11,8 @@ import {
   saveTrainingAction,
   saveTrainingInCreationAction,
   updateTrainingAction,
+  savePeriodInOccurenceEditionAction,
+  deletePeriodAction,
 } from "../../redux/actions/trainingActions";
 import EditOccurencesDialog from "../training-edition/EditOccurencesDialog";
 
@@ -34,12 +36,15 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.primary.main,
     },
   },
-  addIntervalButton: {
+  repeatIntervalsButtonGroup: {
     marginTop: 20,
+    marginLeft: 60,
   },
   repeatIntervalsButton: {
     marginTop: 20,
-    marginLeft: 60,
+  },
+  repeatSelectedPeriodsButton: {
+    marginTop: 20,
   },
   validateButton: {
     position: "absolute",
@@ -47,9 +52,12 @@ const useStyles = makeStyles((theme) => ({
   },
   intervalCreatorContainer: {
     maxHeight: "75%",
+    width: "95%",
     overflow: "auto",
   },
-  mainActionsContainer: {},
+  mainActionsContainer: {
+    marginBottom: 70,
+  },
 }));
 
 const TrainingCreation = ({
@@ -61,11 +69,14 @@ const TrainingCreation = ({
   trainingToEdit = null,
   isEditionMode = false,
   periodInOccurenceEdition,
+  savePeriodInOccurenceEdition,
+  deletePeriod,
 }) => {
   const classes = useStyles();
 
   const [wasSaveClicked, setWasSaveClicked] = useState(false);
   const [isRepeatEditionActive, setIsRepeatEditionActive] = useState(false);
+  const [selectedPeriodsToRepeat, setSelectedPeriodsToRepeat] = useState([]);
   const history = useHistory();
 
   useEffect(() => {
@@ -136,6 +147,32 @@ const TrainingCreation = ({
     setIsRepeatEditionActive((prev) => !prev);
   };
 
+  const onCheckPeriodToRepeat = (period) => {
+    setSelectedPeriodsToRepeat((prev) => {
+      // If the period was already selected, we remove it
+      if (prev.some((per) => per.id === period.id)) {
+        return prev.filter((per) => per.id !== period.id);
+      }
+      // Else we add it to the selected periods
+      return [...prev, period];
+    });
+  };
+
+  const onRepeatSelectedPeriodClick = () => {
+    // We merge everything in the first selected period and remove the other (since they will be duplicated)
+    const [periodToRepeat, ...periodsToRemove] = selectedPeriodsToRepeat;
+    const group = [];
+    selectedPeriodsToRepeat.map((per) => {
+      return group.push(...per.group);
+    });
+    periodToRepeat.group = group;
+    savePeriodInOccurenceEdition(periodToRepeat);
+    // Remove the other periods since they are now grouped with the 'periodToRepeat'
+    periodsToRemove.forEach((per) => {
+      deletePeriod(per.id);
+    });
+  };
+
   return (
     <>
       <div className={classes.root}>
@@ -155,26 +192,41 @@ const TrainingCreation = ({
             isEditMode
             isRepeatEditionMode={isRepeatEditionActive}
             training={trainingInCreation}
+            onCheckPeriodToRepeat={onCheckPeriodToRepeat}
+            selectedPeriodsToRepeat={selectedPeriodsToRepeat}
           />
         </div>
 
         <div className={classes.mainActionsContainer}>
-          <Button
-            color="primary"
-            className={classes.addIntervalButton}
-            onClick={onAddIntervalClick}
-          >
+          <Button color="primary" onClick={onAddIntervalClick}>
             Add an interval
           </Button>
 
-          <Button
-            color="primary"
-            className={classes.repeatIntervalsButton}
-            variant={isRepeatEditionActive ? "outlined" : "text"}
-            onClick={onRepeatIntervalClick}
+          <ButtonGroup
+            orientation="vertical"
+            className={classes.repeatIntervalsButtonGroup}
           >
-            {isRepeatEditionActive ? "Save repeats" : "Repeat intervals"}
-          </Button>
+            <Button
+              color="primary"
+              className={classes.repeatIntervalsButton}
+              onClick={onRepeatIntervalClick}
+            >
+              {isRepeatEditionActive ? "Save repeats" : "Repeat intervals"}
+            </Button>
+
+            {isRepeatEditionActive && (
+              <Button
+                color="secondary"
+                className={classes.repeatSelectedPeriodsButton}
+                onClick={onRepeatSelectedPeriodClick}
+                disabled={
+                  !(selectedPeriodsToRepeat && selectedPeriodsToRepeat.length)
+                }
+              >
+                Repeat selected periods
+              </Button>
+            )}
+          </ButtonGroup>
         </div>
 
         <Button
@@ -206,6 +258,9 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(saveSelectedTrainingAction(training)),
   updateTraining: (id, training) =>
     dispatch(updateTrainingAction(id, training)),
+  savePeriodInOccurenceEdition: (period) =>
+    dispatch(savePeriodInOccurenceEditionAction(period)),
+  deletePeriod: (periodId) => dispatch(deletePeriodAction(periodId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TrainingCreation);

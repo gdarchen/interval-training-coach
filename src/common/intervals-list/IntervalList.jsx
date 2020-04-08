@@ -1,7 +1,10 @@
-import Button from "@material-ui/core/Button";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import { makeStyles } from "@material-ui/core/styles";
+import {
+  Button,
+  List,
+  ListItem,
+  makeStyles,
+  Checkbox,
+} from "@material-ui/core";
 import ReorderIcon from "@material-ui/icons/Reorder";
 import arrayMove from "array-move";
 import classNames from "classnames";
@@ -14,8 +17,8 @@ import {
 } from "react-sortable-hoc";
 import {
   saveIntervalToEditAction,
-  saveTrainingInCreationAction,
   savePeriodInOccurenceEditionAction,
+  saveTrainingInCreationAction,
 } from "../../redux/actions/trainingActions";
 import { formatDuration } from "../../utils/durationUtils";
 import {
@@ -62,6 +65,9 @@ const useStyles = makeStyles({
   editOccurences: {
     marginLeft: 20,
   },
+  checkbox: {
+    color: "white",
+  },
 });
 
 const IntervalList = ({
@@ -71,6 +77,8 @@ const IntervalList = ({
   saveTrainingInCreation,
   isRepeatEditionMode,
   savePeriodInOccurenceEdition,
+  onCheckPeriodToRepeat,
+  selectedPeriodsToRepeat,
 }) => {
   const classes = useStyles();
 
@@ -137,6 +145,17 @@ const IntervalList = ({
           </ListItem>
         )}
       </List>
+
+      {isRepeatEditionMode && period.occurences === 1 && (
+        <Checkbox
+          checked={
+            selectedPeriodsToRepeat &&
+            selectedPeriodsToRepeat.some((per) => per.id === period.id)
+          }
+          className={classes.checkbox}
+          onClick={() => onCheckPeriodToRepeat(period)}
+        />
+      )}
     </div>
   );
 
@@ -166,7 +185,6 @@ const IntervalList = ({
   const reorderPeriods = ({ oldIndex, newIndex }) => {
     const reorderedTraining = arrayMove(training.periods, oldIndex, newIndex);
     saveTrainingInCreation({ ...training, periods: reorderedTraining });
-    console.log(oldIndex, newIndex);
   };
 
   return (
