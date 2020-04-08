@@ -28,7 +28,7 @@ const IntervalOccurences = ({ occurences }) => {
     <Card className={classes.root}>
       <CardContent className={classes.content}>
         <Typography variant="subtitle1" component="p">
-          Répéter
+          Repeat
           <span className={classes.occurences}>&#10005; {occurences}</span>
         </Typography>
       </CardContent>
